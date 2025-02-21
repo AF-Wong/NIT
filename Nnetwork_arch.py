@@ -98,23 +98,25 @@ def pixelshuffle_block(in_channels,
 class PFFN(nn.Module):
     def __init__(self, dim):
         super(PFFN,self).__init__()
-        self.conv0 = nn.Conv2d(dim,dim * 2,1,1,0)
-        self.conv1 = nn.Conv2d(dim, dim ,3,1,1)
+        self.conva = nn.Conv2d(dim,dim * 2,1,1,0)
+        self.conv1 = nn.Conv2d(dim, dim ,1,1,0)
+        self.conv2 = nn.Conv2d(dim, dim, 1, 1, 0)
+        self.conv3 = nn.Conv2d(dim, dim, 1, 1, 0)
         self.dim = dim
         self.act =nn.GELU()
-        self.conv2 = nn.Conv2d(dim * 2, dim, 1, 1, 0)
+        self.convb = nn.Conv2d(dim * 2, dim, 1, 1, 0)
 
     def forward(self, x):
 
-        x = self.act(self.conv0(x))
+        x = self.act(self.conva(x))
         x1, x2 = torch.split(x,[self.dim,self.dim],dim=1)
         x1 = self.act(self.conv1(x1))
         x2f = torch.fft.fftn(x2,dim=(2,3))
-        x2r = self.act(self.conv1(x2f.real))
-        x2i = self.act(self.conv1(x2f.imag))
+        x2r = self.act(self.conv2(x2f.real))
+        x2i = self.act(self.conv3(x2f.imag))
         x2 = torch.complex(x2r,x2i)
         x2 = torch.abs(torch.fft.ifftn(x2,dim=(2,3)))
-        x = self.conv2(torch.cat([x1,x2], dim=1))
+        x = self.convb(torch.cat([x1,x2], dim=1))
         return x
 
 
@@ -122,33 +124,40 @@ class LEM(nn.Module):
     def __init__(self, planes : int, mix_margin: int = 1) -> None:
         super(LEM, self).__init__()
 
-        assert planes % 8 == 0
+        assert planes % 5 == 0
 
         self.planes = planes
-        self.mix_margin = nn.Parameter(torch.tensor(mix_margin, dtype=torch.float), requires_grad=True)
+        #self.mix_margin = nn.Parameter(torch.tensor(mix_margin, dtype=torch.float), requires_grad=True)
+        self.mix_margin = mix_margin
+        self.mask = nn.Parameter(torch.zeros((self.planes, 1, mix_margin*2+1, mix_margin*2+1)), requires_grad=False)
 
-        self.mask = nn.Parameter(torch.zeros((self.planes, 1, 3, 3)), requires_grad=False)
+        #self.eval_conv = nn.Conv2d(in_channels=planes, out_channels=planes, kernel_size=3, padding=1, stride=1, bias=True)
+        #self.eval_conv.weight.requires_grad = False
+        #self.eval_conv.bias.requires_grad = False
 
-        self.eval_conv = nn.Conv2d(in_channels=planes, out_channels=planes, kernel_size=3, padding=1, stride=1, bias=True)
-        self.eval_conv.weight.requires_grad = False
-        self.eval_conv.bias.requires_grad = False
+        #self.mask[3::4, 0, 0, mix_margin] = 1. #从右往左
+        #self.mask[2::4, 0, -1, mix_margin] = 1. #从左往右
+        #self.mask[1::4, 0, mix_margin, 0] = 1. #从下往上
+        #self.mask[0::4, 0, mix_margin, -1] = 1. #从上往下
 
-        self.mask[3::4, 0, 0, mix_margin] = 1. #从右往左
-        self.mask[2::4, 0, -1, mix_margin] = 1. #从左往右
-        self.mask[1::4, 0, mix_margin, 0] = 1. #从下往上
-        self.mask[0::4, 0, mix_margin, -1] = 1. #从上往下
+        #self.mask[4::8, 0, 0, 2] = 1. #左斜下
+        #self.mask[5::8, 0, 2, 0] = 1. #右斜上
+        #self.mask[6::8, 0, 2, 2] = 1. #左斜上
+        #self.mask[7::8, 0, 0, 0] = 1. #右斜下
 
-        self.mask[4::8, 0, 0, 2] = 1. #左斜下
-        self.mask[5::8, 0, 2, 0] = 1. #右斜上
-        self.mask[6::8, 0, 2, 2] = 1. #左斜上
-        self.mask[7::8, 0, 0, 0] = 1. #右斜下
+        self.mask[3::5, 0, 0, mix_margin] = 1.
+        self.mask[2::5, 0, -1, mix_margin] = 1.
+        self.mask[1::5, 0, mix_margin, 0] = 1.
+        self.mask[0::5, 0, mix_margin, -1] = 1.
+        self.mask[4::5, 0, mix_margin, mix_margin] = 1.
 
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        m = int(self.mix_margin.item())
+        #m = int(self.mix_margin.item())
+        m = self.mix_margin
         x = F.conv2d(input=F.pad(x, pad=(m, m, m, m), mode='circular'),
         weight=self.mask, bias=None, stride=(1, 1), padding=(0, 0),
-        dilation=(m, m), groups=self.planes)
+        dilation=(1, 1), groups=self.planes)
         #if self.training:
             #m = int(self.mix_margin.item())
             #x = F.conv2d(input=F.pad(x, pad=(m, m, m, m), mode='circular'),
@@ -163,30 +172,36 @@ class LEM(nn.Module):
 class Ablock(nn.Module):
     def __init__(self, dim, paradigm='spatial'):
         super(Ablock, self).__init__()
-        self.lem = LEM(planes=dim)
+        self.lem0 = LEM(planes=dim)
+        self.lem1 = LEM(planes=dim)
+        self.lem2 = LEM(planes=dim)
+        self.lem3 = LEM(planes=dim)
+        self.lem4 = LEM(planes=dim)
+        self.lem5 = LEM(planes=dim)
         self.act = nn.SiLU(inplace=True)
         self.paradigm = paradigm
 
     def forward(self, x):
         if self.paradigm == 'spatial':
-            f = self.lem(x)
+            f = self.lem0(x)
             f = self.act(f)
-            fatt = self.lem(torch.sigmoid(f) - 0.5)
+            fatt = self.lem1(torch.sigmoid(f) - 0.5)
             f = (f + x) * fatt
         else:
             f = torch.fft.fftn(x, dim=(2, 3))
 
-            fr = self.lem(f.real)
+            fr = self.lem2(f.real)
             fr = self.act(fr)
-            fi = self.lem(f.imag)
+            fi = self.lem3(f.imag)
             fi = self.act(fi)
 
-            attr = self.lem(torch.sigmoid(fr) - 0.5)
-            atti = self.lem(torch.sigmoid(fi) - 0.5)
+            attr = self.lem4(torch.sigmoid(fr) - 0.5)
+            atti = self.lem5(torch.sigmoid(fi) - 0.5)
 
             f = torch.complex(fr, fi)
             fatt = torch.complex(attr, atti)
             f = torch.abs(torch.fft.ifftn(f, dim=(2, 3)))
+            #fatt = self.lem(torch.sigmoid(f) - 0.5)
             fatt = torch.abs(torch.fft.ifftn(fatt, dim=(2, 3)))
             f = (f + x) * fatt
 
@@ -207,14 +222,11 @@ class AAblock(nn.Module):
 
 @ARCH_REGISTRY.register()
 class Nnetwork(nn.Module):
-    """
-    Swift Parameter-free Attention Network for Efficient Super-Resolution
-    """
 
     def __init__(self,
                  num_in_ch=3,
                  num_out_ch=3,
-                 feature_channels=32,
+                 feature_channels=40,
                  upscale=4,
                  bias=True,
                  img_range=255.,
@@ -273,7 +285,7 @@ class Nnetwork(nn.Module):
 if __name__ == "__main__":
     # from fvcore.nn import FlopCountAnalysis, flop_count_table
     # import time
-    model = Nnetwork(3, 3, upscale=4, feature_channels=32)
+    model = Nnetwork(3, 3, upscale=4, feature_channels=40)
     # model.eval()
     inputs = (torch.rand(1, 3, 256, 256),)
     print(model(*inputs).shape)

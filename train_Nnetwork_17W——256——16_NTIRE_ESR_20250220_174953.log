@@ -1,0 +1,713 @@
+2025-02-20 17:49:53,722 INFO: 
+                ____                _       _____  ____
+               / __ ) ____ _ _____ (_)_____/ ___/ / __ \
+              / __  |/ __ `// ___// // ___/\__ \ / /_/ /
+             / /_/ // /_/ /(__  )/ // /__ ___/ // _, _/
+            /_____/ \__,_//____//_/ \___//____//_/ |_|
+     ______                   __   __                 __      __
+    / ____/____   ____   ____/ /  / /   __  __ _____ / /__   / /
+   / / __ / __ \ / __ \ / __  /  / /   / / / // ___// //_/  / /
+  / /_/ // /_/ // /_/ // /_/ /  / /___/ /_/ // /__ / /<    /_/
+  \____/ \____/ \____/ \____/  /_____/\____/ \___//_/|_|  (_)
+    
+Version Information: 
+	BasicSR: 1.4.2
+	PyTorch: 2.6.0+cu118
+	TorchVision: 0.21.0+cu118
+2025-02-20 17:49:53,722 INFO: 
+  name: Nnetwork_17W——256——16_NTIRE_ESR
+  model_type: IRModel
+  num_gpu: 1
+  manual_seed: 42
+  bit: 8
+  network_g:[
+    type: Nnetwork
+    upscale: 4
+    num_in_ch: 3
+    num_out_ch: 3
+    task: lsr
+  ]
+  path:[
+    pretrain_network_g: None
+    strict_load_g: True
+    resume_state: None
+    experiments_root: /home/a/FriedRiceLab-master/experiments/Nnetwork_17W——256——16_NTIRE_ESR
+    models: /home/a/FriedRiceLab-master/experiments/Nnetwork_17W——256——16_NTIRE_ESR/models
+    training_states: /home/a/FriedRiceLab-master/experiments/Nnetwork_17W——256——16_NTIRE_ESR/training_states
+    log: /home/a/FriedRiceLab-master/experiments/Nnetwork_17W——256——16_NTIRE_ESR
+    visualization: /home/a/FriedRiceLab-master/experiments/Nnetwork_17W——256——16_NTIRE_ESR/visualization
+  ]
+  train:[
+    gt_size: 256
+    batch_size_per_gpu: 16
+    total_iter: 1000000
+    optim_g:[
+      type: Adam
+      lr: 0.0005
+      weight_decay: 0
+      betas: [0.9, 0.999]
+    ]
+    scheduler:[
+      type: CosineAnnealingRestartLR
+      periods: [1000000]
+      restart_weights: [1]
+      eta_min: 1e-06
+    ]
+    pixel_opt:[
+      type: L1Loss
+      loss_weight: 1.0
+      reduction: mean
+    ]
+    use_autocast: True
+  ]
+  val:[
+    val_freq: 10000
+    save_img: False
+    suffix: None
+    metrics:[
+      psnr:[
+        type: calculate_psnr
+        crop_border: 4
+        test_y_channel: False
+      ]
+      ssim:[
+        type: calculate_ssim
+        crop_border: 4
+        test_y_channel: False
+      ]
+    ]
+  ]
+  task_name: NTIRE_ESR
+  scale: 4
+  num_in_ch: 3
+  num_out_ch: 3
+  task: lsr
+  hook_layer_type: Conv2d
+  datasets:[
+    train:[
+      name: DF2K-train
+      type: IRDataset
+      dataroot_gt: /home/a/LSDIR/DF2K/train/HR/x.lmdb
+      dataroot_lq: /home/a/LSDIR/DF2K/train/LR/x4.lmdb
+      meta_info_file: None
+      io_backend:[
+        type: lmdb
+      ]
+      extra_datasets:[
+        extra_0:[
+          name: LSDIR-00
+          dataroot_gt: /home/a/LSDIR/LSDIR-00/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-00/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_1:[
+          name: LSDIR-01
+          dataroot_gt: /home/a/LSDIR/LSDIR-01/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-01/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_2:[
+          name: LSDIR-02
+          dataroot_gt: /home/a/LSDIR/LSDIR-02/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-02/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_3:[
+          name: LSDIR-03
+          dataroot_gt: /home/a/LSDIR/LSDIR-03/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-03/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_4:[
+          name: LSDIR-04
+          dataroot_gt: /home/a/LSDIR/LSDIR-04/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-04/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_5:[
+          name: LSDIR-05
+          dataroot_gt: /home/a/LSDIR/LSDIR-05/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-05/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_6:[
+          name: LSDIR-06
+          dataroot_gt: /home/a/LSDIR/LSDIR-06/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-06/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_7:[
+          name: LSDIR-07
+          dataroot_gt: /home/a/LSDIR/LSDIR-07/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-07/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_8:[
+          name: LSDIR-08
+          dataroot_gt: /home/a/LSDIR/LSDIR-08/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-08/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_9:[
+          name: LSDIR-09
+          dataroot_gt: /home/a/LSDIR/LSDIR-09/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-09/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_10:[
+          name: LSDIR-10
+          dataroot_gt: /home/a/LSDIR/LSDIR-10/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-10/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_11:[
+          name: LSDIR-11
+          dataroot_gt: /home/a/LSDIR/LSDIR-11/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-11/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_12:[
+          name: LSDIR-12
+          dataroot_gt: /home/a/LSDIR/LSDIR-12/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-12/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_13:[
+          name: LSDIR-13
+          dataroot_gt: /home/a/LSDIR/LSDIR-13/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-13/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_14:[
+          name: LSDIR-14
+          dataroot_gt: /home/a/LSDIR/LSDIR-14/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-14/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_15:[
+          name: LSDIR-15
+          dataroot_gt: /home/a/LSDIR/LSDIR-15/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-15/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+        extra_16:[
+          name: LSDIR-16
+          dataroot_gt: /home/a/LSDIR/LSDIR-16/HR/x.lmdb
+          dataroot_lq: /home/a/LSDIR/LSDIR-16/LR/x4.lmdb
+          meta_info_file: None
+          io_backend:[
+            type: lmdb
+          ]
+        ]
+      ]
+      use_hflip: True
+      use_rot: True
+      use_shuffle: True
+      num_worker_per_gpu: 4
+      dataset_enlarge_ratio: 1
+      prefetch_mode: None
+      phase: train
+      scale: 4
+    ]
+    val_0:[
+      name: DF2K_val_10
+      type: IRDataset
+      dataroot_gt: /home/a/LSDIR/DF2K/val/HR/x.lmdb
+      dataroot_lq: /home/a/LSDIR/DF2K/val/LR/x4.lmdb
+      io_backend:[
+        type: lmdb
+      ]
+      phase: val
+      scale: 4
+    ]
+  ]
+  test_datasets:[
+    test_0:[
+      name: Demo_Set5
+      type: IRDataset
+      dataroot_gt: /home/a/LSDIR/demo_data/Demo_Set5/HR/x4
+      dataroot_lq: /home/a/LSDIR/demo_data/Demo_Set5/LR/x4
+      io_backend:[
+        type: disk
+      ]
+    ]
+  ]
+  analyse_datasets:[
+    analyse_0:[
+      name: Demo_Set5
+      type: IRDataset
+      dataroot_gt: /home/a/LSDIR/demo_data/Demo_Set5/HR/x4
+      dataroot_lq: /home/a/LSDIR/demo_data/Demo_Set5/LR/x4
+      io_backend:[
+        type: disk
+      ]
+    ]
+  ]
+  infer_datasets:[
+    infer_0:[
+      name: Set5_GT
+      type: IRDataset
+      dataroot_gt: /home/a/LSDIR/demo_data/Demo_Set5/HR/x4
+      io_backend:[
+        type: disk
+      ]
+    ]
+  ]
+  cka_datasets:[
+    cka_0:[
+      name: DF2K_val
+      type: IRDataset
+      dataroot_gt: /home/a/LSDIR/DF2K/val/HR/x.lmdb
+      dataroot_lq: /home/a/LSDIR/DF2K/val/LR/x4.lmdb
+      meta_info_file: /home/a/LSDIR/DF2K/val/DF2K_val.txt
+      io_backend:[
+        type: lmdb
+      ]
+      input_size: 288
+    ]
+  ]
+  mad_datasets:[
+    mad_0:[
+      name: DF2K_val
+      type: IRDataset
+      dataroot_gt: /home/a/LSDIR/DF2K/val/HR/x.lmdb
+      dataroot_lq: /home/a/LSDIR/DF2K/val/LR/x4.lmdb
+      meta_info_file: /home/a/LSDIR/DF2K/val/DF2K_val.txt
+      io_backend:[
+        type: lmdb
+      ]
+      input_size: 288
+    ]
+  ]
+  interpret_imgs:[
+    img_0:[
+      img_path: /home/a/LSDIR/demo_data/Urban7/7.png
+      w: 110
+      h: 150
+    ]
+  ]
+  logger:[
+    print_freq: 1000
+    save_checkpoint_freq: 1000
+    use_tb_logger: False
+    wandb:[
+      project: None
+      resume_id: None
+    ]
+  ]
+  dist_params:[
+    backend: nccl
+    port: 4000
+  ]
+  dist: False
+  rank: 0
+  world_size: 1
+  auto_resume: False
+  is_train: True
+  root_path: /home/a/FriedRiceLab-master
+
+2025-02-20 17:49:53,801 INFO: Dataset [IRDataset] - DF2K-train is built.
+2025-02-20 17:49:53,842 INFO: Dataset [IRDataset] - LSDIR-00 is built.
+2025-02-20 17:49:53,882 INFO: Dataset [IRDataset] - LSDIR-01 is built.
+2025-02-20 17:49:53,927 INFO: Dataset [IRDataset] - LSDIR-02 is built.
+2025-02-20 17:49:53,970 INFO: Dataset [IRDataset] - LSDIR-03 is built.
+2025-02-20 17:49:54,012 INFO: Dataset [IRDataset] - LSDIR-04 is built.
+2025-02-20 17:49:54,055 INFO: Dataset [IRDataset] - LSDIR-05 is built.
+2025-02-20 17:49:54,101 INFO: Dataset [IRDataset] - LSDIR-06 is built.
+2025-02-20 17:49:54,140 INFO: Dataset [IRDataset] - LSDIR-07 is built.
+2025-02-20 17:49:54,179 INFO: Dataset [IRDataset] - LSDIR-08 is built.
+2025-02-20 17:49:54,221 INFO: Dataset [IRDataset] - LSDIR-09 is built.
+2025-02-20 17:49:54,265 INFO: Dataset [IRDataset] - LSDIR-10 is built.
+2025-02-20 17:49:54,309 INFO: Dataset [IRDataset] - LSDIR-11 is built.
+2025-02-20 17:49:54,346 INFO: Dataset [IRDataset] - LSDIR-12 is built.
+2025-02-20 17:49:54,383 INFO: Dataset [IRDataset] - LSDIR-13 is built.
+2025-02-20 17:49:54,422 INFO: Dataset [IRDataset] - LSDIR-14 is built.
+2025-02-20 17:49:54,463 INFO: Dataset [IRDataset] - LSDIR-15 is built.
+2025-02-20 17:49:54,502 INFO: Dataset [IRDataset] - LSDIR-16 is built.
+2025-02-20 17:49:54,503 INFO: Training statistics:
+	Training set(s) used: 
+		DF2K-train: 144147 images
+		LSDIR-00: 73912 images
+		LSDIR-01: 74146 images
+		LSDIR-02: 80934 images
+		LSDIR-03: 78293 images
+		LSDIR-04: 76566 images
+		LSDIR-05: 78831 images
+		LSDIR-06: 82235 images
+		LSDIR-07: 71470 images
+		LSDIR-08: 71353 images
+		LSDIR-09: 76219 images
+		LSDIR-10: 79476 images
+		LSDIR-11: 79075 images
+		LSDIR-12: 69077 images
+		LSDIR-13: 67604 images
+		LSDIR-14: 71335 images
+		LSDIR-15: 73796 images
+		LSDIR-16: 72017 images
+	Number of total train images: 1420486
+	Dataset enlarge ratio: 1
+	Batch size per gpu: 16
+	World size (gpu number): 1
+	Require iter number per epoch: 88781
+	Total epochs: 12; iters: 1000000.
+2025-02-20 17:49:54,503 INFO: Dataset [IRDataset] - DF2K_val_10 is built.
+2025-02-20 17:49:54,503 INFO: Number of val images/folders in DF2K_val_10: 100
+2025-02-20 17:49:54,512 INFO: Network [Nnetwork] is created.
+2025-02-20 17:49:54,646 INFO: Loss [L1Loss] is created.
+2025-02-20 17:49:54,646 WARNING: Params AAblock0.SAblock.lem0.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock0.SAblock.lem1.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock0.SAblock.lem2.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock0.SAblock.lem3.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock0.SAblock.lem4.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock0.SAblock.lem5.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock0.FAblock.lem0.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock0.FAblock.lem1.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock0.FAblock.lem2.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock0.FAblock.lem3.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock0.FAblock.lem4.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock0.FAblock.lem5.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock1.SAblock.lem0.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock1.SAblock.lem1.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock1.SAblock.lem2.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock1.SAblock.lem3.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock1.SAblock.lem4.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock1.SAblock.lem5.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock1.FAblock.lem0.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock1.FAblock.lem1.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock1.FAblock.lem2.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock1.FAblock.lem3.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock1.FAblock.lem4.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock1.FAblock.lem5.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock2.SAblock.lem0.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock2.SAblock.lem1.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock2.SAblock.lem2.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock2.SAblock.lem3.mask will not be optimized.
+2025-02-20 17:49:54,646 WARNING: Params AAblock2.SAblock.lem4.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock2.SAblock.lem5.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock2.FAblock.lem0.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock2.FAblock.lem1.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock2.FAblock.lem2.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock2.FAblock.lem3.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock2.FAblock.lem4.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock2.FAblock.lem5.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock3.SAblock.lem0.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock3.SAblock.lem1.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock3.SAblock.lem2.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock3.SAblock.lem3.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock3.SAblock.lem4.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock3.SAblock.lem5.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock3.FAblock.lem0.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock3.FAblock.lem1.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock3.FAblock.lem2.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock3.FAblock.lem3.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock3.FAblock.lem4.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock3.FAblock.lem5.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock4.SAblock.lem0.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock4.SAblock.lem1.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock4.SAblock.lem2.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock4.SAblock.lem3.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock4.SAblock.lem4.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock4.SAblock.lem5.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock4.FAblock.lem0.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock4.FAblock.lem1.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock4.FAblock.lem2.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock4.FAblock.lem3.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock4.FAblock.lem4.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock4.FAblock.lem5.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock5.SAblock.lem0.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock5.SAblock.lem1.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock5.SAblock.lem2.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock5.SAblock.lem3.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock5.SAblock.lem4.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock5.SAblock.lem5.mask will not be optimized.
+2025-02-20 17:49:54,647 WARNING: Params AAblock5.FAblock.lem0.mask will not be optimized.
+2025-02-20 17:49:54,648 WARNING: Params AAblock5.FAblock.lem1.mask will not be optimized.
+2025-02-20 17:49:54,648 WARNING: Params AAblock5.FAblock.lem2.mask will not be optimized.
+2025-02-20 17:49:54,648 WARNING: Params AAblock5.FAblock.lem3.mask will not be optimized.
+2025-02-20 17:49:54,648 WARNING: Params AAblock5.FAblock.lem4.mask will not be optimized.
+2025-02-20 17:49:54,648 WARNING: Params AAblock5.FAblock.lem5.mask will not be optimized.
+2025-02-20 17:49:54,648 INFO: Model [IRModel] is created.
+2025-02-20 17:49:54,649 INFO: model: #params=87.1K
+2025-02-20 17:49:54,865 INFO: Start training from epoch: 0, iter: 0
+2025-02-20 17:52:39,255 INFO: [Nnetw..][epoch:  0, iter:   1,000, lr:(5.000e-04,)] [eta: 1 day, 21:16:35, time (data): 0.221 (0.156)] l_pix: 2.3890e+03 
+2025-02-20 17:52:39,255 INFO: Saving models and training states.
+2025-02-20 18:01:35,556 INFO: [Nnetw..][epoch:  0, iter:   2,000, lr:(5.000e-04,)] [eta: 4 days, 0:55:36, time (data): 0.629 (0.561)] l_pix: 8.1140e+02 
+2025-02-20 18:01:35,556 INFO: Saving models and training states.
+2025-02-20 18:06:52,555 INFO: [Nnetw..][epoch:  0, iter:   3,000, lr:(5.000e-04,)] [eta: 3 days, 21:49:04, time (data): 0.154 (0.090)] l_pix: 4.0777e+02 
+2025-02-20 18:06:52,555 INFO: Saving models and training states.
+2025-02-20 18:10:42,875 INFO: [Nnetw..][epoch:  0, iter:   4,000, lr:(5.000e-04,)] [eta: 3 days, 14:13:30, time (data): 0.287 (0.222)] l_pix: 3.1276e+02 
+2025-02-20 18:10:42,875 INFO: Saving models and training states.
+2025-02-20 18:16:14,562 INFO: [Nnetw..][epoch:  0, iter:   5,000, lr:(5.000e-04,)] [eta: 3 days, 15:14:44, time (data): 0.437 (0.372)] l_pix: 2.0186e+02 
+2025-02-20 18:16:14,562 INFO: Saving models and training states.
+2025-02-20 18:25:53,555 INFO: [Nnetw..][epoch:  0, iter:   6,000, lr:(5.000e-04,)] [eta: 4 days, 3:16:26, time (data): 0.650 (0.584)] l_pix: 1.2141e+02 
+2025-02-20 18:25:53,555 INFO: Saving models and training states.
+2025-02-20 18:36:28,572 INFO: [Nnetw..][epoch:  0, iter:   7,000, lr:(4.999e-04,)] [eta: 4 days, 14:01:38, time (data): 0.632 (0.565)] l_pix: 1.0016e+02 
+2025-02-20 18:36:28,572 INFO: Saving models and training states.
+2025-02-20 18:45:37,532 INFO: [Nnetw..][epoch:  0, iter:   8,000, lr:(4.999e-04,)] [eta: 4 days, 19:05:06, time (data): 0.634 (0.568)] l_pix: 7.4138e+01 
+2025-02-20 18:45:37,539 INFO: Saving models and training states.
+2025-02-20 18:56:00,814 INFO: [Nnetw..][epoch:  0, iter:   9,000, lr:(4.999e-04,)] [eta: 5 days, 1:15:28, time (data): 0.623 (0.558)] l_pix: 8.5252e+01 
+2025-02-20 18:56:00,814 INFO: Saving models and training states.
+2025-02-20 19:06:35,083 INFO: [Nnetw..][epoch:  0, iter:  10,000, lr:(4.999e-04,)] [eta: 5 days, 6:27:49, time (data): 0.646 (0.577)] l_pix: 7.6676e+01 
+2025-02-20 19:06:35,083 INFO: Saving models and training states.
+2025-02-20 19:10:55,306 INFO: Validation DF2K_val_10
+
+[psnr]   [Current: 11.8895 @ iter 10000]   [Best: 11.8895 @ iter 10000]
+
+[ssim]   [Current: 0.0761  @ iter 10000]   [Best: 0.0761  @ iter 10000]
+
+2025-02-20 19:21:50,518 INFO: [Nnetw..][epoch:  0, iter:  11,000, lr:(4.999e-04,)] [eta: 5 days, 17:42:45, time (data): 0.641 (0.576)] l_pix: 4.5488e+01 
+2025-02-20 19:21:50,519 INFO: Saving models and training states.
+2025-02-20 19:33:02,990 INFO: [Nnetw..][epoch:  0, iter:  12,000, lr:(4.998e-04,)] [eta: 5 days, 21:29:18, time (data): 0.662 (0.597)] l_pix: 4.1898e+01 
+2025-02-20 19:33:02,990 INFO: Saving models and training states.
+2025-02-20 19:44:13,338 INFO: [Nnetw..][epoch:  0, iter:  13,000, lr:(4.998e-04,)] [eta: 6 days, 0:36:34, time (data): 0.671 (0.606)] l_pix: 4.3992e+02 
+2025-02-20 19:44:13,338 INFO: Saving models and training states.
+2025-02-20 19:55:12,842 INFO: [Nnetw..][epoch:  0, iter:  14,000, lr:(4.998e-04,)] [eta: 6 days, 3:02:46, time (data): 0.663 (0.595)] l_pix: 3.5922e+01 
+2025-02-20 19:55:12,842 INFO: Saving models and training states.
+2025-02-20 20:06:19,219 INFO: [Nnetw..][epoch:  0, iter:  15,000, lr:(4.997e-04,)] [eta: 6 days, 5:15:32, time (data): 0.659 (0.592)] l_pix: 4.7057e+01 
+2025-02-20 20:06:19,235 INFO: Saving models and training states.
+2025-02-20 20:17:29,912 INFO: [Nnetw..][epoch:  0, iter:  16,000, lr:(4.997e-04,)] [eta: 6 days, 7:14:45, time (data): 0.688 (0.623)] l_pix: 4.3969e+01 
+2025-02-20 20:17:29,913 INFO: Saving models and training states.
+2025-02-20 20:28:33,366 INFO: [Nnetw..][epoch:  0, iter:  17,000, lr:(4.996e-04,)] [eta: 6 days, 8:51:38, time (data): 0.649 (0.582)] l_pix: 5.8197e+01 
+2025-02-20 20:28:33,366 INFO: Saving models and training states.
+2025-02-20 20:39:42,193 INFO: [Nnetw..][epoch:  0, iter:  18,000, lr:(4.996e-04,)] [eta: 6 days, 10:21:25, time (data): 0.674 (0.608)] l_pix: 4.9851e+01 
+2025-02-20 20:39:42,193 INFO: Saving models and training states.
+2025-02-20 20:50:49,666 INFO: [Nnetw..][epoch:  0, iter:  19,000, lr:(4.996e-04,)] [eta: 6 days, 11:39:25, time (data): 0.681 (0.615)] l_pix: 4.1657e+01 
+2025-02-20 20:50:49,666 INFO: Saving models and training states.
+2025-02-20 21:01:51,768 INFO: [Nnetw..][epoch:  0, iter:  20,000, lr:(4.995e-04,)] [eta: 6 days, 12:44:07, time (data): 0.668 (0.602)] l_pix: 4.2103e+01 
+2025-02-20 21:01:51,819 INFO: Saving models and training states.
+2025-02-20 21:06:03,429 INFO: Validation DF2K_val_10
+
+[psnr]   [Current: 13.0513 @ iter 20000]   [Best: 13.0513 @ iter 20000]
+
+[ssim]   [Current: 0.1083  @ iter 20000]   [Best: 0.1083  @ iter 20000]
+
+2025-02-20 21:17:09,769 INFO: [Nnetw..][epoch:  0, iter:  21,000, lr:(4.995e-04,)] [eta: 6 days, 17:00:25, time (data): 0.655 (0.587)] l_pix: 4.1679e+01 
+2025-02-20 21:17:09,770 INFO: Saving models and training states.
+2025-02-20 21:28:19,479 INFO: [Nnetw..][epoch:  0, iter:  22,000, lr:(4.994e-04,)] [eta: 6 days, 17:48:05, time (data): 0.673 (0.607)] l_pix: 7.4323e+01 
+2025-02-20 21:28:19,480 INFO: Saving models and training states.
+2025-02-20 21:39:26,404 INFO: [Nnetw..][epoch:  0, iter:  23,000, lr:(4.993e-04,)] [eta: 6 days, 18:28:39, time (data): 0.667 (0.600)] l_pix: 1.3729e+02 
+2025-02-20 21:39:26,404 INFO: Saving models and training states.
+2025-02-20 21:50:29,606 INFO: [Nnetw..][epoch:  0, iter:  24,000, lr:(4.993e-04,)] [eta: 6 days, 19:02:24, time (data): 0.651 (0.585)] l_pix: 6.3566e+01 
+2025-02-20 21:50:29,609 INFO: Saving models and training states.
+2025-02-20 22:01:35,954 INFO: [Nnetw..][epoch:  0, iter:  25,000, lr:(4.992e-04,)] [eta: 6 days, 19:34:36, time (data): 0.671 (0.603)] l_pix: 3.1633e+01 
+2025-02-20 22:01:35,954 INFO: Saving models and training states.
+2025-02-20 22:12:42,615 INFO: [Nnetw..][epoch:  0, iter:  26,000, lr:(4.992e-04,)] [eta: 6 days, 20:03:40, time (data): 0.651 (0.583)] l_pix: 3.5802e+01 
+2025-02-20 22:12:42,615 INFO: Saving models and training states.
+2025-02-20 22:23:54,975 INFO: [Nnetw..][epoch:  0, iter:  27,000, lr:(4.991e-04,)] [eta: 6 days, 20:33:11, time (data): 0.624 (0.558)] l_pix: 2.5922e+01 
+2025-02-20 22:23:54,975 INFO: Saving models and training states.
+2025-02-20 22:35:02,006 INFO: [Nnetw..][epoch:  0, iter:  28,000, lr:(4.990e-04,)] [eta: 6 days, 20:56:43, time (data): 0.654 (0.589)] l_pix: 2.9871e+01 
+2025-02-20 22:35:02,007 INFO: Saving models and training states.
+2025-02-20 22:46:11,239 INFO: [Nnetw..][epoch:  0, iter:  29,000, lr:(4.990e-04,)] [eta: 6 days, 21:19:05, time (data): 0.646 (0.580)] l_pix: 1.4247e+01 
+2025-02-20 22:46:11,239 INFO: Saving models and training states.
+2025-02-20 22:57:19,332 INFO: [Nnetw..][epoch:  0, iter:  30,000, lr:(4.989e-04,)] [eta: 6 days, 21:38:36, time (data): 0.688 (0.622)] l_pix: 3.7492e+01 
+2025-02-20 22:57:19,332 INFO: Saving models and training states.
+2025-02-20 23:01:22,921 INFO: Validation DF2K_val_10
+
+[psnr]   [Current: 14.8284 @ iter 30000]   [Best: 14.8284 @ iter 30000]
+
+[ssim]   [Current: 0.2946  @ iter 30000]   [Best: 0.2946  @ iter 30000]
+
+2025-02-20 23:12:29,429 INFO: [Nnetw..][epoch:  0, iter:  31,000, lr:(4.988e-04,)] [eta: 7 days, 0:02:12, time (data): 0.670 (0.603)] l_pix: 4.3695e+01 
+2025-02-20 23:12:29,429 INFO: Saving models and training states.
+2025-02-20 23:23:41,463 INFO: [Nnetw..][epoch:  0, iter:  32,000, lr:(4.987e-04,)] [eta: 7 days, 0:15:52, time (data): 0.685 (0.618)] l_pix: 5.2381e+01 
+2025-02-20 23:23:41,550 INFO: Saving models and training states.
+2025-02-20 23:34:43,165 INFO: [Nnetw..][epoch:  0, iter:  33,000, lr:(4.987e-04,)] [eta: 7 days, 0:22:59, time (data): 0.653 (0.587)] l_pix: 2.3383e+02 
+2025-02-20 23:34:43,166 INFO: Saving models and training states.
+2025-02-20 23:45:48,476 INFO: [Nnetw..][epoch:  0, iter:  34,000, lr:(4.986e-04,)] [eta: 7 days, 0:30:44, time (data): 0.611 (0.543)] l_pix: 4.4983e+01 
+2025-02-20 23:45:48,476 INFO: Saving models and training states.
+2025-02-20 23:56:57,207 INFO: [Nnetw..][epoch:  0, iter:  35,000, lr:(4.985e-04,)] [eta: 7 days, 0:38:59, time (data): 0.709 (0.643)] l_pix: 5.9942e+01 
+2025-02-20 23:56:57,207 INFO: Saving models and training states.
+2025-02-21 00:08:10,763 INFO: [Nnetw..][epoch:  0, iter:  36,000, lr:(4.984e-04,)] [eta: 7 days, 0:48:19, time (data): 0.631 (0.565)] l_pix: 2.9884e+01 
+2025-02-21 00:08:10,764 INFO: Saving models and training states.
+2025-02-21 00:19:18,156 INFO: [Nnetw..][epoch:  0, iter:  37,000, lr:(4.983e-04,)] [eta: 7 days, 0:53:52, time (data): 0.649 (0.582)] l_pix: 3.8467e+01 
+2025-02-21 00:19:18,167 INFO: Saving models and training states.
+2025-02-21 00:30:25,084 INFO: [Nnetw..][epoch:  0, iter:  38,000, lr:(4.982e-04,)] [eta: 7 days, 0:58:20, time (data): 0.775 (0.710)] l_pix: 5.8873e+01 
+2025-02-21 00:30:25,084 INFO: Saving models and training states.
+2025-02-21 00:41:27,495 INFO: [Nnetw..][epoch:  0, iter:  39,000, lr:(4.981e-04,)] [eta: 7 days, 1:00:09, time (data): 0.424 (0.361)] l_pix: 2.3406e+01 
+2025-02-21 00:41:27,495 INFO: Saving models and training states.
+2025-02-21 00:52:29,738 INFO: [Nnetw..][epoch:  0, iter:  40,000, lr:(4.980e-04,)] [eta: 7 days, 1:01:15, time (data): 0.063 (0.002)] l_pix: 3.3927e+01 
+2025-02-21 00:52:29,739 INFO: Saving models and training states.
+2025-02-21 00:56:32,531 INFO: Validation DF2K_val_10
+
+[psnr]   [Current: 18.3695 @ iter 40000]   [Best: 18.3695 @ iter 40000]
+
+[ssim]   [Current: 0.2764  @ iter 40000]   [Best: 0.2946  @ iter 30000]
+
+2025-02-21 01:07:33,213 INFO: [Nnetw..][epoch:  0, iter:  41,000, lr:(4.979e-04,)] [eta: 7 days, 2:35:48, time (data): 0.669 (0.604)] l_pix: 3.7886e+01 
+2025-02-21 01:07:33,227 INFO: Saving models and training states.
+2025-02-21 01:18:37,205 INFO: [Nnetw..][epoch:  0, iter:  42,000, lr:(4.978e-04,)] [eta: 7 days, 2:34:06, time (data): 0.669 (0.603)] l_pix: 4.9001e+01 
+2025-02-21 01:18:37,205 INFO: Saving models and training states.
+2025-02-21 01:29:42,708 INFO: [Nnetw..][epoch:  0, iter:  43,000, lr:(4.977e-04,)] [eta: 7 days, 2:32:31, time (data): 0.643 (0.577)] l_pix: 3.4541e+01 
+2025-02-21 01:29:42,708 INFO: Saving models and training states.
+2025-02-21 01:40:52,311 INFO: [Nnetw..][epoch:  0, iter:  44,000, lr:(4.976e-04,)] [eta: 7 days, 2:31:59, time (data): 0.683 (0.618)] l_pix: 3.2123e+02 
+2025-02-21 01:40:52,311 INFO: Saving models and training states.
+2025-02-21 01:51:57,001 INFO: [Nnetw..][epoch:  0, iter:  45,000, lr:(4.975e-04,)] [eta: 7 days, 2:29:15, time (data): 0.656 (0.589)] l_pix: 4.9597e+01 
+2025-02-21 01:51:57,083 INFO: Saving models and training states.
+2025-02-21 02:03:05,955 INFO: [Nnetw..][epoch:  0, iter:  46,000, lr:(4.974e-04,)] [eta: 7 days, 2:27:37, time (data): 0.672 (0.604)] l_pix: 5.8716e+01 
+2025-02-21 02:03:05,955 INFO: Saving models and training states.
+2025-02-21 02:14:12,750 INFO: [Nnetw..][epoch:  0, iter:  47,000, lr:(4.973e-04,)] [eta: 7 days, 2:24:51, time (data): 0.657 (0.591)] l_pix: 2.1820e+01 
+2025-02-21 02:14:12,750 INFO: Saving models and training states.
+2025-02-21 02:25:18,995 INFO: [Nnetw..][epoch:  0, iter:  48,000, lr:(4.972e-04,)] [eta: 7 days, 2:21:33, time (data): 0.665 (0.599)] l_pix: 6.3061e+01 
+2025-02-21 02:25:18,995 INFO: Saving models and training states.
+2025-02-21 02:36:27,033 INFO: [Nnetw..][epoch:  0, iter:  49,000, lr:(4.970e-04,)] [eta: 7 days, 2:18:32, time (data): 0.658 (0.592)] l_pix: 2.2424e+01 
+2025-02-21 02:36:27,069 INFO: Saving models and training states.
+2025-02-21 02:47:40,480 INFO: [Nnetw..][epoch:  0, iter:  50,000, lr:(4.969e-04,)] [eta: 7 days, 2:16:53, time (data): 0.679 (0.612)] l_pix: 2.2169e+01 
+2025-02-21 02:47:40,480 INFO: Saving models and training states.
+2025-02-21 02:51:42,944 INFO: Validation DF2K_val_10
+
+[psnr]   [Current: 18.3398 @ iter 50000]   [Best: 18.3695 @ iter 40000]
+
+[ssim]   [Current: 0.2821  @ iter 50000]   [Best: 0.2946  @ iter 30000]
+
+2025-02-21 03:02:51,564 INFO: [Nnetw..][epoch:  0, iter:  51,000, lr:(4.968e-04,)] [eta: 7 days, 3:28:34, time (data): 0.673 (0.608)] l_pix: 2.6467e+01 
+2025-02-21 03:02:51,564 INFO: Saving models and training states.
+2025-02-21 03:13:57,454 INFO: [Nnetw..][epoch:  0, iter:  52,000, lr:(4.967e-04,)] [eta: 7 days, 3:22:24, time (data): 0.661 (0.594)] l_pix: 4.5459e+01 
+2025-02-21 03:13:57,454 INFO: Saving models and training states.
+2025-02-21 03:25:14,385 INFO: [Nnetw..][epoch:  0, iter:  53,000, lr:(4.965e-04,)] [eta: 7 days, 3:19:20, time (data): 0.683 (0.615)] l_pix: 1.9718e+01 
+2025-02-21 03:25:14,423 INFO: Saving models and training states.
+2025-02-21 03:36:22,249 INFO: [Nnetw..][epoch:  0, iter:  54,000, lr:(4.964e-04,)] [eta: 7 days, 3:13:20, time (data): 0.672 (0.607)] l_pix: 4.0388e+01 
+2025-02-21 03:36:22,249 INFO: Saving models and training states.
+2025-02-21 03:47:30,207 INFO: [Nnetw..][epoch:  0, iter:  55,000, lr:(4.963e-04,)] [eta: 7 days, 3:07:09, time (data): 0.657 (0.589)] l_pix: 2.8138e+01 
+2025-02-21 03:47:30,207 INFO: Saving models and training states.
+2025-02-21 03:58:48,446 INFO: [Nnetw..][epoch:  0, iter:  56,000, lr:(4.961e-04,)] [eta: 7 days, 3:03:42, time (data): 0.686 (0.619)] l_pix: 2.1828e+01 
+2025-02-21 03:58:48,446 INFO: Saving models and training states.
+2025-02-21 04:09:58,739 INFO: [Nnetw..][epoch:  0, iter:  57,000, lr:(4.960e-04,)] [eta: 7 days, 2:57:46, time (data): 0.664 (0.598)] l_pix: 1.9979e+01 
+2025-02-21 04:09:58,758 INFO: Saving models and training states.
+2025-02-21 04:21:07,590 INFO: [Nnetw..][epoch:  0, iter:  58,000, lr:(4.959e-04,)] [eta: 7 days, 2:51:16, time (data): 0.669 (0.602)] l_pix: 3.3844e+01 
+2025-02-21 04:21:07,591 INFO: Saving models and training states.
+2025-02-21 04:32:13,598 INFO: [Nnetw..][epoch:  0, iter:  59,000, lr:(4.957e-04,)] [eta: 7 days, 2:43:52, time (data): 0.675 (0.609)] l_pix: 3.0274e+03 
+2025-02-21 04:32:13,598 INFO: Saving models and training states.
+2025-02-21 04:43:25,144 INFO: [Nnetw..][epoch:  0, iter:  60,000, lr:(4.956e-04,)] [eta: 7 days, 2:37:46, time (data): 0.686 (0.620)] l_pix: 6.1772e+02 
+2025-02-21 04:43:25,150 INFO: Saving models and training states.
+2025-02-21 04:47:05,078 INFO: Validation DF2K_val_10
+
+[psnr]   [Current: 6.1998  @ iter 60000]   [Best: 18.3695 @ iter 40000]
+
+[ssim]   [Current: 0.0096  @ iter 60000]   [Best: 0.2946  @ iter 30000]
+
+2025-02-21 04:58:15,161 INFO: [Nnetw..][epoch:  0, iter:  61,000, lr:(4.954e-04,)] [eta: 7 days, 3:27:34, time (data): 0.675 (0.608)] l_pix: 3.1077e+02 
+2025-02-21 04:58:15,161 INFO: Saving models and training states.
+2025-02-21 05:09:25,005 INFO: [Nnetw..][epoch:  0, iter:  62,000, lr:(4.953e-04,)] [eta: 7 days, 3:19:46, time (data): 0.664 (0.597)] l_pix: 1.8746e+01 
+2025-02-21 05:09:25,006 INFO: Saving models and training states.
+2025-02-21 05:20:33,228 INFO: [Nnetw..][epoch:  0, iter:  63,000, lr:(4.951e-04,)] [eta: 7 days, 3:11:27, time (data): 0.683 (0.617)] l_pix: 3.9607e+01 
+2025-02-21 05:20:33,228 INFO: Saving models and training states.
+2025-02-21 05:31:41,118 INFO: [Nnetw..][epoch:  0, iter:  64,000, lr:(4.950e-04,)] [eta: 7 days, 3:02:58, time (data): 0.688 (0.622)] l_pix: 5.5126e+01 
+2025-02-21 05:31:41,118 INFO: Saving models and training states.
+2025-02-21 05:42:50,207 INFO: [Nnetw..][epoch:  0, iter:  65,000, lr:(4.948e-04,)] [eta: 7 days, 2:54:41, time (data): 0.650 (0.583)] l_pix: 1.1911e+02 
+2025-02-21 05:42:50,268 INFO: Saving models and training states.
+2025-02-21 05:53:56,053 INFO: [Nnetw..][epoch:  0, iter:  66,000, lr:(4.947e-04,)] [eta: 7 days, 2:45:33, time (data): 0.671 (0.604)] l_pix: 4.8349e+01 
+2025-02-21 05:53:56,053 INFO: Saving models and training states.
+2025-02-21 06:05:02,568 INFO: [Nnetw..][epoch:  0, iter:  67,000, lr:(4.945e-04,)] [eta: 7 days, 2:36:31, time (data): 0.624 (0.559)] l_pix: 3.3722e+01 
+2025-02-21 06:05:02,568 INFO: Saving models and training states.
+2025-02-21 06:16:07,498 INFO: [Nnetw..][epoch:  0, iter:  68,000, lr:(4.943e-04,)] [eta: 7 days, 2:27:04, time (data): 0.638 (0.571)] l_pix: 5.0316e+01 
+2025-02-21 06:16:07,535 INFO: Saving models and training states.
+2025-02-21 06:27:15,250 INFO: [Nnetw..][epoch:  0, iter:  69,000, lr:(4.942e-04,)] [eta: 7 days, 2:18:11, time (data): 0.658 (0.593)] l_pix: 2.8612e+01 
+2025-02-21 06:27:15,250 INFO: Saving models and training states.
+2025-02-21 06:38:22,637 INFO: [Nnetw..][epoch:  0, iter:  70,000, lr:(4.940e-04,)] [eta: 7 days, 2:09:11, time (data): 0.679 (0.612)] l_pix: 1.5675e+02 
+2025-02-21 06:38:22,637 INFO: Saving models and training states.
+2025-02-21 06:43:11,625 INFO: Validation DF2K_val_10
+
+[psnr]   [Current: 7.1102  @ iter 70000]   [Best: 18.3695 @ iter 40000]
+
+[ssim]   [Current: 0.0154  @ iter 70000]   [Best: 0.2946  @ iter 30000]
+
+2025-02-21 06:54:16,395 INFO: [Nnetw..][epoch:  0, iter:  71,000, lr:(4.938e-04,)] [eta: 7 days, 3:02:33, time (data): 0.679 (0.614)] l_pix: 3.5242e+01 
+2025-02-21 06:54:16,420 INFO: Saving models and training states.
+2025-02-21 07:05:24,591 INFO: [Nnetw..][epoch:  0, iter:  72,000, lr:(4.936e-04,)] [eta: 7 days, 2:52:40, time (data): 0.627 (0.562)] l_pix: 5.1476e+01 
+2025-02-21 07:05:24,591 INFO: Saving models and training states.
+2025-02-21 07:16:35,470 INFO: [Nnetw..][epoch:  0, iter:  73,000, lr:(4.935e-04,)] [eta: 7 days, 2:43:18, time (data): 0.723 (0.657)] l_pix: 7.7849e+01 
+2025-02-21 07:16:35,470 INFO: Saving models and training states.
+2025-02-21 07:27:38,363 INFO: [Nnetw..][epoch:  0, iter:  74,000, lr:(4.933e-04,)] [eta: 7 days, 2:32:14, time (data): 0.621 (0.555)] l_pix: 3.8404e+01 
+2025-02-21 07:27:38,379 INFO: Saving models and training states.
+2025-02-21 07:38:49,326 INFO: [Nnetw..][epoch:  0, iter:  75,000, lr:(4.931e-04,)] [eta: 7 days, 2:22:49, time (data): 0.667 (0.600)] l_pix: 3.3874e+01 
+2025-02-21 07:38:49,327 INFO: Saving models and training states.
+2025-02-21 07:49:53,558 INFO: [Nnetw..][epoch:  0, iter:  76,000, lr:(4.929e-04,)] [eta: 7 days, 2:12:00, time (data): 0.587 (0.521)] l_pix: 4.5176e+01 
+2025-02-21 07:49:53,558 INFO: Saving models and training states.
+2025-02-21 08:01:05,001 INFO: [Nnetw..][epoch:  0, iter:  77,000, lr:(4.927e-04,)] [eta: 7 days, 2:02:36, time (data): 0.651 (0.587)] l_pix: 2.9517e+01 
+2025-02-21 08:01:05,010 INFO: Saving models and training states.
+2025-02-21 08:12:09,044 INFO: [Nnetw..][epoch:  0, iter:  78,000, lr:(4.925e-04,)] [eta: 7 days, 1:51:43, time (data): 0.626 (0.555)] l_pix: 8.3095e+01 
+2025-02-21 08:12:09,044 INFO: Saving models and training states.
+2025-02-21 08:23:18,639 INFO: [Nnetw..][epoch:  0, iter:  79,000, lr:(4.924e-04,)] [eta: 7 days, 1:41:54, time (data): 0.785 (0.721)] l_pix: 2.4224e+03 
+2025-02-21 08:23:18,639 INFO: Saving models and training states.
+2025-02-21 08:34:28,428 INFO: [Nnetw..][epoch:  0, iter:  80,000, lr:(4.922e-04,)] [eta: 7 days, 1:32:05, time (data): 0.066 (0.002)] l_pix: 3.3779e+01 
+2025-02-21 08:34:28,443 INFO: Saving models and training states.
+2025-02-21 08:38:35,545 INFO: Validation DF2K_val_10
+
+[psnr]   [Current: 16.6635 @ iter 80000]   [Best: 18.3695 @ iter 40000]
+
+[ssim]   [Current: 0.2791  @ iter 80000]   [Best: 0.2946  @ iter 30000]
+
+2025-02-21 08:49:43,865 INFO: [Nnetw..][epoch:  0, iter:  81,000, lr:(4.920e-04,)] [eta: 7 days, 2:08:41, time (data): 0.671 (0.603)] l_pix: 2.7047e+01 
+2025-02-21 08:49:43,865 INFO: Saving models and training states.
+2025-02-21 09:00:57,055 INFO: [Nnetw..][epoch:  0, iter:  82,000, lr:(4.918e-04,)] [eta: 7 days, 1:58:49, time (data): 0.683 (0.616)] l_pix: 1.5255e+03 
+2025-02-21 09:00:57,055 INFO: Saving models and training states.
+2025-02-21 09:12:04,718 INFO: [Nnetw..][epoch:  0, iter:  83,000, lr:(4.916e-04,)] [eta: 7 days, 1:47:55, time (data): 0.669 (0.603)] l_pix: 8.2240e+01 
+2025-02-21 09:12:04,719 INFO: Saving models and training states.
+2025-02-21 09:23:10,934 INFO: [Nnetw..][epoch:  0, iter:  84,000, lr:(4.914e-04,)] [eta: 7 days, 1:36:44, time (data): 0.653 (0.587)] l_pix: 2.9657e+01 
+2025-02-21 09:23:10,934 INFO: Saving models and training states.
+2025-02-21 09:34:19,757 INFO: [Nnetw..][epoch:  0, iter:  85,000, lr:(4.912e-04,)] [eta: 7 days, 1:26:01, time (data): 0.668 (0.603)] l_pix: 4.4429e+01 
+2025-02-21 09:34:19,757 INFO: Saving models and training states.
+2025-02-21 09:45:27,672 INFO: [Nnetw..][epoch:  0, iter:  86,000, lr:(4.909e-04,)] [eta: 7 days, 1:15:08, time (data): 0.663 (0.596)] l_pix: 6.0814e+01 
+2025-02-21 09:45:27,672 INFO: Saving models and training states.
+2025-02-21 09:56:34,142 INFO: [Nnetw..][epoch:  0, iter:  87,000, lr:(4.907e-04,)] [eta: 7 days, 1:04:00, time (data): 0.670 (0.603)] l_pix: 7.8621e+01 
+2025-02-21 09:56:34,143 INFO: Saving models and training states.
+2025-02-21 10:07:41,495 INFO: [Nnetw..][epoch:  0, iter:  88,000, lr:(4.905e-04,)] [eta: 7 days, 0:53:00, time (data): 0.680 (0.613)] l_pix: 4.0767e+01 
+2025-02-21 10:07:41,495 INFO: Saving models and training states.
+2025-02-21 10:18:38,550 INFO: [Nnetw..][epoch:  1, iter:  89,000, lr:(4.903e-04,)] [eta: 7 days, 0:40:16, time (data): 0.612 (0.545)] l_pix: 3.6075e+01 
+2025-02-21 10:18:38,550 INFO: Saving models and training states.
+2025-02-21 10:28:54,944 INFO: [Nnetw..][epoch:  1, iter:  90,000, lr:(4.901e-04,)] [eta: 7 days, 0:20:42, time (data): 0.615 (0.548)] l_pix: 3.1583e+01 
+2025-02-21 10:28:54,944 INFO: Saving models and training states.
+2025-02-21 10:33:01,121 INFO: Validation DF2K_val_10
+
+[psnr]   [Current: 16.0609 @ iter 90000]   [Best: 18.3695 @ iter 40000]
+
+[ssim]   [Current: 0.355   @ iter 90000]   [Best: 0.355   @ iter 90000]
+
